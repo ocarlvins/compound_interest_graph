@@ -28,7 +28,7 @@ class Investment:
         self.compounding = compounding
 
         self.per = d([1,12,365][per or 2])
-
+        self.points = []
         pass
 
     def new_period(self, addition=d('0')):
@@ -75,14 +75,15 @@ periods = {
 import matplotlib.pyplot as plt
 import numpy as np
 # li = list(zip(range(1, 14), range(14, 27)))
+
 def linechart(*pairs):
-    axes = []
-    for pair in pairs:
+    for num, pair in enumerate(pairs):
+        axes = []
         axes.append([x[0] for x in pair])
         axes.append([x[1] for x in pair])
+        plt.plot(*[np.array(i) for i in axes], ls=":", label=f"Pair {num}")
 
-    print(len(axes))
-    plt.plot(*[np.array(i) for i in axes], ls=":", color='r')
+    plt.legend()
     plt.grid(color = 'green', linestyle = '--', linewidth = 0.5)
     plt.xlabel("Time in years")
     plt.ylabel("Deposits")
@@ -95,23 +96,14 @@ initial = 20000000
 
 mali  = Investment(d('7.7'), initial, periods['annually'], compounding=True)
 mali.calculate()
-linechart(mali.get_points())
 
 mali2 = Investment(d('15'), initial, periods['annually'], compounding=True)
 mali2.calculate()
-linechart(mali2.get_points())
 
-
-def second_plot():
-    x1 = np.array([0, 1, 2, 3])
-    y1 = np.array([3, 8, 1, 10])
-    x2 = np.array([0, 1, 2, 3])
-    y2 = np.array([6, 2, 7, 11])
-
-    plt.plot(x1, y1, x2, y2)
-    plt.show()
-
-second_plot()
+linechart(
+    mali.get_points(),
+    mali2.get_points()
+)
 
 '''
                              Inferences
