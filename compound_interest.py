@@ -2,11 +2,13 @@ from decimal import Decimal as d
 import locale
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
+
 def f(item):
     try:
         return f'{item:,.2f}'
     except Exception as e:
         return str(item)
+
 
 def cell(item):
     try:
@@ -14,11 +16,12 @@ def cell(item):
     except Exception as e:
         return str(item).rjust(20)
 
+
 def row(*args):
     print(''.join([cell(i) for i in args]))
 
-class Investment:
 
+class Investment:
     def __init__(self, perc, deposit, per=None, compounding=True) -> None:
         self.perc = d('10')
         self.deposit = d('0')
@@ -50,7 +53,7 @@ class Investment:
         # self.points.append([d(f"{int(self.period/self.per)}.{(self.period%self.per)/self.per}"), self.deposit])
         self.points.append([self.period/self.per, self.deposit/d('1000000')])
 
-        row(int(self.period/self.per), self.period%self.per, self.perc, self.interest, self.deposit)
+        # row(int(self.period/self.per), self.period%self.per, self.perc, self.interest, self.deposit)
         if self.compounding:
             return self.deposit
         else:
@@ -70,8 +73,9 @@ class Investment:
 
 
             deposit = self.new_period(addition=addition)
-            if deposit > (sum(additions) + initial)*2:
-                break
+            if times:
+                if deposit > (sum(additions) + initial)*times:
+                    break
 
     def __iter__(self):
         yield from self.points
@@ -92,9 +96,11 @@ def linechart(*pairs):
         axes.append([x[0] for x in pair])
         axes.append([x[1] for x in pair])
         # plt.plot(*[np.array(i) for i in axes], ls=":", label=f"{f(pair.initial)} @ {f(pair.perc)}% {'Compounded' if pair.compounding else ''}")
-        plt.plot(*[np.array(i) for i in axes],  label=f"{f(pair.initial)} @ {f(pair.perc)}% {'Compounded' if pair.compounding else ''}")
+        plt.plot(*[np.array(i) for i in axes], ls=":",  label=f"{f(pair.initial)} @ {f(pair.perc)}% {'Compd' if pair.compounding else ''}")
 
     plt.legend()
+    plt.xticks(range(0, 21))
+    plt.yticks(range(0, 31))
     plt.grid(color = 'green', linestyle = '--', linewidth = 0.5)
     plt.xlabel("Time in years")
     plt.ylabel("Deposits")
@@ -102,13 +108,32 @@ def linechart(*pairs):
     plt.xlim(xmin=0)
     plt.title('Correct Plot')
     plt.show()
+    """
+    Introducing interactivity
+    fig = plt.figure()
+
+    with plt.ion():
+        # interactive mode will be on
+        # figures will automatically be shown
+        fig2 = plt.figure()
+        fig2.show()
+    """
 
 initial = 1000000
-
+times = 0
 linechart(
+    Investment(d('17'), initial, periods['daily'], compounding=True),
+    Investment(d('16'), initial, periods['daily'], compounding=True),
     Investment(d('15'), initial, periods['daily'], compounding=True),
+    Investment(d('14'), initial, periods['daily'], compounding=True),
+    Investment(d('13'), initial, periods['daily'], compounding=True),
+    Investment(d('12'), initial, periods['daily'], compounding=True),
+    Investment(d('11'), initial, periods['daily'], compounding=True),
     Investment(d('10'), initial, periods['daily'], compounding=True),
-    Investment(d('7.7'), initial, periods['daily'], compounding=True),
+    Investment(d('9'), initial, periods['daily'], compounding=True),
+    Investment(d('8'), initial, periods['daily'], compounding=True),
+    Investment(d('7'), initial, periods['daily'], compounding=True),
+    Investment(d('6'), initial, periods['daily'], compounding=True),
 )
 
 '''
