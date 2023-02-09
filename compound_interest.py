@@ -2,6 +2,12 @@ from decimal import Decimal as d
 import locale
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
+def f(item):
+    try:
+        return f'{item:,.2f}'
+    except Exception as e:
+        return str(item)
+
 def cell(item):
     try:
         return f'{item:,.2f}'.rjust(20)
@@ -12,24 +18,25 @@ def row(*args):
     print(''.join([cell(i) for i in args]))
 
 class Investment:
-    perc = d('10')
-    deposit = d('0')
-    interest = d('0')
-    period = 0
-    compounding = True
-
-    points = []
 
     def __init__(self, perc, deposit, per=None, compounding=True) -> None:
+        self.perc = d('10')
+        self.deposit = d('0')
+        self.interest = d('0')
+        self.period = 0
+        self.compounding = True
+        self.points = []
         if perc:
             self.perc = d(perc)
         if deposit:
+            self.initial = deposit
             self.deposit = deposit
         self.compounding = compounding
 
         self.per = d([1,12,365][per or 2])
         self.points = []
-        pass
+
+        self.calculate()
 
     def new_period(self, addition=d('0')):
         interest = self.deposit * self.perc/d(self.per)/d(100)
@@ -66,8 +73,11 @@ class Investment:
             if deposit > (sum(additions) + initial)*2:
                 break
 
+    def __iter__(self):
+        yield from self.points
+
 periods = {
-    'annually':0,
+    'annually': 0,
     'monthly': 1,
     'daily': 2
 }
@@ -81,7 +91,8 @@ def linechart(*pairs):
         axes = []
         axes.append([x[0] for x in pair])
         axes.append([x[1] for x in pair])
-        plt.plot(*[np.array(i) for i in axes], ls=":", label=f"Pair {num}")
+        # plt.plot(*[np.array(i) for i in axes], ls=":", label=f"{f(pair.initial)} @ {f(pair.perc)}% {'Compounded' if pair.compounding else ''}")
+        plt.plot(*[np.array(i) for i in axes],  label=f"{f(pair.initial)} @ {f(pair.perc)}% {'Compounded' if pair.compounding else ''}")
 
     plt.legend()
     plt.grid(color = 'green', linestyle = '--', linewidth = 0.5)
@@ -92,17 +103,12 @@ def linechart(*pairs):
     plt.title('Correct Plot')
     plt.show()
 
-initial = 20000000
-
-mali  = Investment(d('7.7'), initial, periods['annually'], compounding=True)
-mali.calculate()
-
-mali2 = Investment(d('15'), initial, periods['annually'], compounding=True)
-mali2.calculate()
+initial = 1000000
 
 linechart(
-    mali.get_points(),
-    mali2.get_points()
+    Investment(d('15'), initial, periods['daily'], compounding=True),
+    Investment(d('10'), initial, periods['daily'], compounding=True),
+    Investment(d('7.7'), initial, periods['daily'], compounding=True),
 )
 
 '''
