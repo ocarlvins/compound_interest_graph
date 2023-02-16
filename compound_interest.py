@@ -96,17 +96,20 @@ def linechart(*pairs):
         axes.append([x[0] for x in pair])
         axes.append([x[1] for x in pair])
         # plt.plot(*[np.array(i) for i in axes], ls=":", label=f"{f(pair.initial)} @ {f(pair.perc)}% {'Compounded' if pair.compounding else ''}")
-        plt.plot(*[np.array(i) for i in axes], ls=":",  label=f"{f(pair.initial)} @ {f(pair.perc)}% {'Compd' if pair.compounding else ''}")
+        plt.plot(*[np.array(i) for i in axes], ls="-",  label=f"{f(pair.initial)} @ {f(pair.perc)}% {'Compd' if pair.compounding else ''}")
 
     plt.legend()
+    # plt.figure(figsize=(8, 6), dpi=300)
     plt.xticks(range(0, 21))
-    plt.yticks(range(0, 31))
-    plt.grid(color = 'green', linestyle = '--', linewidth = 0.5)
+    if not times:
+        plt.yticks(range(0, 31))
+    plt.grid(color='green', linestyle = '--', linewidth = 0.5)
     plt.xlabel("Time in years")
     plt.ylabel("Deposits")
     plt.ylim(ymin=0)
     plt.xlim(xmin=0)
     plt.title('Correct Plot')
+    plt.savefig('filename.png', dpi=300)
     plt.show()
     """
     Introducing interactivity
@@ -121,7 +124,7 @@ def linechart(*pairs):
 
 initial = 1000000
 times = 0
-linechart(
+vests = [
     Investment(d('17'), initial, periods['daily'], compounding=True),
     Investment(d('16'), initial, periods['daily'], compounding=True),
     Investment(d('15'), initial, periods['daily'], compounding=True),
@@ -134,6 +137,9 @@ linechart(
     Investment(d('8'), initial, periods['daily'], compounding=True),
     Investment(d('7'), initial, periods['daily'], compounding=True),
     Investment(d('6'), initial, periods['daily'], compounding=True),
+]
+linechart(
+    *vests
 )
 
 '''
