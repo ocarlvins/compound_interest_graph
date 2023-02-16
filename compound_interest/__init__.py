@@ -21,26 +21,27 @@ periods = {
 }
 
 initial = 1000000
+multiplier = 1
 times = 0
 vests = [
-    Investment(d('17'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
-    Investment(d('16'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
-    Investment(d('15'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
-    Investment(d('14'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
-    Investment(d('13'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
-    Investment(d('12'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
-    Investment(d('11'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
-    Investment(d('10'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
-    Investment(d('9'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
-    Investment(d('8'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
-    Investment(d('7'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
-    Investment(d('6'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
+    Investment(d('17'), initial_deposit=initial*multiplier, per=periods['daily'], compounding=True, times=times),
+    Investment(d('16'), initial_deposit=initial*multiplier, per=periods['daily'], compounding=True, times=times),
+    Investment(d('15'), initial_deposit=initial*multiplier, per=periods['daily'], compounding=True, times=times),
+    Investment(d('14'), initial_deposit=initial*multiplier, per=periods['daily'], compounding=True, times=times),
+    Investment(d('13'), initial_deposit=initial*multiplier, per=periods['daily'], compounding=True, times=times),
+    Investment(d('12'), initial_deposit=initial*multiplier, per=periods['daily'], compounding=True, times=times),
+    Investment(d('11'), initial_deposit=initial*multiplier, per=periods['daily'], compounding=True, times=times),
+    Investment(d('10'), initial_deposit=initial*multiplier, per=periods['daily'], compounding=True, times=times),
+    Investment(d('9'), initial_deposit=initial*multiplier, per=periods['daily'], compounding=True, times=times),
+    Investment(d('8'), initial_deposit=initial*multiplier, per=periods['daily'], compounding=True, times=times),
+    Investment(d('7'), initial_deposit=initial*multiplier, per=periods['daily'], compounding=True, times=times),
+    Investment(d('6'), initial_deposit=initial*multiplier, per=periods['daily'], compounding=True, times=times),
 ]
 deposit_chart(
-    *vests, times=times
+    *vests, times=times, multiplier=multiplier
 )
 monthly_return_chart(
-    *[i.setShow('monthly_returns') for i in vests], times=times
+    *[i.setShow('monthly_returns') for i in vests], times=times, multiplier=multiplier
 )
 
 '''

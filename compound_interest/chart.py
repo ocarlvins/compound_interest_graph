@@ -12,7 +12,7 @@ def f(item):
 # li = list(zip(range(1, 14), range(14, 27)))
 
 
-def chart(*pairs, times=0, show_processor=lambda x: x.show()):
+def chart(*pairs, **kwargs):
     for num, pair in enumerate(pairs):
         axes = []
         axes.append([x[0] for x in pair])
@@ -45,7 +45,7 @@ def chart(*pairs, times=0, show_processor=lambda x: x.show()):
 def deposit_chart(*args, **kwargs):
     plot = chart(*args, **kwargs)
     if not kwargs['times']:
-        plot.yticks(range(0, 32000000, 2500000))
+        plot.yticks(range(0, 32000000*kwargs['multiplier'], 2500000*kwargs['multiplier']))
     plot.xlabel("Time in years")
     plot.ylabel("Deposits")
     plot.title('Deposits Accumulated')
@@ -57,7 +57,7 @@ def deposit_chart(*args, **kwargs):
 def monthly_return_chart(*args, **kwargs):
     plot = chart(*args, **kwargs)
     if not kwargs['times']:
-        plot.yticks(range(0, 450000, 25000))
+        plot.yticks(range(0, 450000*kwargs['multiplier'], 25000*kwargs['multiplier']))
     plot.xlabel("Time in years")
     plot.ylabel("Monthly Return")
     plot.title('Monthly Return Chart')
