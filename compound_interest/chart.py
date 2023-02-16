@@ -11,7 +11,8 @@ def f(item):
         return str(item)
 # li = list(zip(range(1, 14), range(14, 27)))
 
-def linechart(*pairs, times=0):
+
+def chart(*pairs, times=0, show_processor=lambda x: x.show()):
     for num, pair in enumerate(pairs):
         axes = []
         axes.append([x[0] for x in pair])
@@ -22,19 +23,13 @@ def linechart(*pairs, times=0):
     plt.legend()
     # plt.figure(figsize=(8, 6), dpi=300)
     plt.xticks(range(0, 21))
-    if not times:
-        plt.yticks(range(0, 32000000, 2500000))
-    plt.ticklabel_format(useOffset=False)
-    plt.ticklabel_format(style='plain', useLocale=True)
-    plt.grid(color='green', linestyle='--', linewidth = 0.5)
-    plt.xlabel("Time in years")
-    plt.ylabel("Deposits")
+    # plt.ticklabel_format(useOffset=False)
     plt.ylim(ymin=0)
     plt.xlim(xmin=0)
-    plt.title('Correct Plot')
-    plt.tight_layout()
-    plt.savefig('filename.svg', dpi=300)
-    plt.show()
+    plt.ticklabel_format(style='plain', useLocale=True)
+    plt.grid(color='green', linestyle='--', linewidth = 0.5)
+    return plt
+
     """
     Introducing interactivity
     fig = plt.figure()
@@ -45,3 +40,29 @@ def linechart(*pairs, times=0):
         fig2 = plt.figure()
         fig2.show()
     """
+
+
+def deposit_chart(*args, **kwargs):
+    plot = chart(*args, **kwargs)
+    if not kwargs['times']:
+        plot.yticks(range(0, 32000000, 2500000))
+    plot.xlabel("Time in years")
+    plot.ylabel("Deposits")
+    plot.title('Deposits Accumulated')
+    plot.savefig('deposits.svg', dpi=300)
+    plt.tight_layout()
+    plot.show()
+
+
+def monthly_return_chart(*args, **kwargs):
+    plot = chart(*args, **kwargs)
+    if not kwargs['times']:
+        plot.yticks(range(0, 450000, 25000))
+    plot.xlabel("Time in years")
+    plot.ylabel("Monthly Return")
+    plot.title('Monthly Return Chart')
+    plot.savefig('monthly_return.svg', dpi=300)
+    plt.tight_layout()
+    plot.show()
+
+

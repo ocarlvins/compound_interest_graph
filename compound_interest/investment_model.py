@@ -2,7 +2,7 @@ from decimal import Decimal as d
 
 
 class Investment:
-    def __init__(self, perc, initial_deposit, per=None, compounding=True, times=0) -> None:
+    def __init__(self, perc, initial_deposit, per=None, compounding=True, times=0, show='points') -> None:
         self.perc = d('10')
         self.deposit = d('0')
         self.interest = d('0')
@@ -18,6 +18,8 @@ class Investment:
 
         self.per = d([1,12,365][per or 2])
         self.points = []
+        self.monthly_returns = []
+        self.show = show
 
         self.calculate(initial_deposit, times)
 
@@ -32,6 +34,7 @@ class Investment:
 
         # self.points.append([d(f"{int(self.period/self.per)}.{(self.period%self.per)/self.per}"), self.deposit])
         self.points.append([self.period/self.per, self.deposit])
+        self.monthly_returns.append([self.period/self.per, (self.deposit * self.perc) / (d('12') * d('100'))])
 
         # row(int(self.period/self.per), self.period%self.per, self.perc, self.interest, self.deposit)
         if self.compounding:
@@ -57,5 +60,13 @@ class Investment:
                 if deposit > (sum(additions) + initial)*times:
                     break
 
+    def setShow(self, show='points'):
+        self.show = show
+        return self
+
     def __iter__(self):
-        yield from self.points
+        if self.show == 'points':
+            yield from self.points
+        elif self.show == 'monthly_returns':
+            yield from self.monthly_returns
+

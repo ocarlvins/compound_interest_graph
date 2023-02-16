@@ -1,5 +1,5 @@
 from decimal import Decimal as d
-from compound_interest.chart import linechart
+from compound_interest.chart import deposit_chart, monthly_return_chart
 from compound_interest.investment_model import Investment
 
 
@@ -36,8 +36,11 @@ vests = [
     Investment(d('7'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
     Investment(d('6'), initial_deposit=initial, per=periods['daily'], compounding=True, times=times),
 ]
-linechart(
+deposit_chart(
     *vests, times=times
+)
+monthly_return_chart(
+    *[i.setShow('monthly_returns') for i in vests], times=times
 )
 
 '''
