@@ -51,7 +51,7 @@ class Investment:
             self.deposit += d(addition)
 
         # self.points.append([d(f"{int(self.period/self.per)}.{(self.period%self.per)/self.per}"), self.deposit])
-        self.points.append([self.period/self.per, self.deposit/d('1000000')])
+        self.points.append([self.period/self.per, self.deposit])
 
         # row(int(self.period/self.per), self.period%self.per, self.perc, self.interest, self.deposit)
         if self.compounding:
@@ -102,14 +102,17 @@ def linechart(*pairs):
     # plt.figure(figsize=(8, 6), dpi=300)
     plt.xticks(range(0, 21))
     if not times:
-        plt.yticks(range(0, 31))
+        plt.yticks(range(0, 30000000))
+    plt.ticklabel_format(useOffset=False)
+    plt.ticklabel_format(style='plain', useLocale=True)
     plt.grid(color='green', linestyle = '--', linewidth = 0.5)
     plt.xlabel("Time in years")
     plt.ylabel("Deposits")
     plt.ylim(ymin=0)
     plt.xlim(xmin=0)
     plt.title('Correct Plot')
-    plt.savefig('filename.png', dpi=300)
+    plt.tight_layout()
+    plt.savefig('filename.svg', dpi=300)
     plt.show()
     """
     Introducing interactivity
