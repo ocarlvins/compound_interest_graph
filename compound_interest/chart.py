@@ -48,8 +48,8 @@ def deposit_chart(*args, **kwargs):
         plot.yticks(range(0, 32000000*kwargs['multiplier'], 2500000*kwargs['multiplier']))
     plot.xlabel("Time in years")
     plot.ylabel("Deposits")
-    plot.title('Deposits Accumulated')
-    plot.savefig('deposits.svg', dpi=300)
+    plot.title('Accumulated Deposit')
+    plot.savefig('deposits.png', dpi=300)
     plt.tight_layout()
     plot.show()
 
@@ -61,7 +61,7 @@ def monthly_return_chart(*args, **kwargs):
     plot.xlabel("Time in years")
     plot.ylabel("Monthly Return")
     plot.title('Monthly Return Chart')
-    plot.savefig('monthly_return.svg', dpi=300)
+    plot.savefig('monthly_return.png', dpi=300)
     plt.tight_layout()
     plot.show()
 
